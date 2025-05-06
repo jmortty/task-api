@@ -1,16 +1,20 @@
-require('dotenv').config();
 const express = require('express');
-const connectDB = require('./config/db'); // MongoDB connection setup
-const userRoutes = require('./routes/userRoutes'); // User routes
-const labelRoutes = require('./routes/labelRoutes'); // Label routes
-const commentRoutes = require('./routes/commentRoutes'); // Comment routes
-const taskRoutes = require('./routes/taskRoutes'); // Task routes
-const swaggerDocs = require('./swagger/swagger'); // Swagger documentation setup
+const connectDB = require('./config/db');
+const userRoutes = require('./routes/userRoutes');
+const labelRoutes = require('./routes/labelRoutes');
+const commentRoutes = require('./routes/commentRoutes');
+const taskRoutes = require('./routes/taskRoutes');
+const swaggerDocs = require('./swagger/swagger');
 
 const app = express();
 
 // Middleware to parse JSON
 app.use(express.json());
+
+// Root Route: This will handle requests to "/"
+app.get('/', (req, res) => {
+    res.send('Welcome to the Task Management API!');
+});
 
 // Connect to MongoDB
 connectDB();
