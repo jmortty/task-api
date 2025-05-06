@@ -1,33 +1,21 @@
 const Comment = require('../models/comment');
-const Task = require('../models/task');
-const User = require('../models/user');
 
-// Create a new comment
-exports.createComment = async (req, res) => {
+// Update comment by ID
+exports.updateComment = async (req, res) => {
     try {
+        const { id } = req.params;
         const { text, createdBy, taskId } = req.body;
 
-        const task = await Task.findById(taskId);
-        if (!task) {
-            return res.status(404).json({ message: 'Task not found' });
+        const comment = await Comment.findByIdAndUpdate(id, { text, createdBy, task: taskId }, { new: true });
+
+        if (!comment) {
+            return res.status(404).json({ message: 'Comment not found' });
         }
 
-        const user = await User.findById(createdBy);
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-
-        const comment = new Comment({ text, createdBy, task: taskId });
-        await comment.save();
-
-        task.comments.push(comment);
-        await task.save();
-
-        user.comments.push(comment);
-        await user.save();
-
-        res.status(201).json(comment);
+        res.status(200).json(comment);
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
 };
+
+// Other CRUD functions like getComments, createComment, etc., should be defined here as well.
