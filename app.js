@@ -1,25 +1,27 @@
+require('dotenv').config();  // Load environment variables from .env file
+
 const express = require('express');
 const connectDB = require('./config/db');  // MongoDB connection setup
-const userRoutes = require('./routes/userRoutes');  // User routes
-const taskRoutes = require('./routes/taskRoutes');  // Task routes
-const commentRoutes = require('./routes/commentRoutes');  // Comment routes
-const swaggerDocs = require('./swagger/swagger');  // Swagger documentation setup
+const userRoutes = require('./routes/userRoutes');  // Import user routes
+const taskRoutes = require('./routes/taskRoutes');  // Import task routes
+const commentRoutes = require('./routes/commentRoutes');  // Import comment routes
+const swaggerDocs = require('./swagger/swagger');  // Import Swagger documentation setup
 
 const app = express();
 
-// Middleware to parse JSON requests
+// Middleware to parse incoming JSON data
 app.use(express.json());
 
 // Connect to MongoDB
 connectDB();
 
-// API Routes
-app.use('/api', userRoutes);  // Mount user routes at /api
-app.use('/api', taskRoutes);  // Mount task routes at /api
-app.use('/api', commentRoutes);  // Mount comment routes at /api
+// Register API routes
+app.use('/api', userRoutes);  // User routes at /api
+app.use('/api', taskRoutes);  // Task routes at /api
+app.use('/api', commentRoutes);  // Comment routes at /api
 
-// Swagger documentation setup
-swaggerDocs(app);  // Set up Swagger UI for API docs
+// Set up Swagger documentation at /api-docs
+swaggerDocs(app);
 
 // Start the server
 const PORT = process.env.PORT || 5000;

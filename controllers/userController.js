@@ -40,3 +40,15 @@ exports.getUserById = async (req, res) => {
         res.status(500).json({ message: err.message });
     }
 };
+
+// Example controller function
+exports.createUser = async (req, res) => {
+    try {
+        const { name, email, password, role } = req.body;
+        const user = new User({ name, email, password, role });
+        await user.save();
+        res.status(201).json(user);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+};

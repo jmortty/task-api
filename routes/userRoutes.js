@@ -18,6 +18,8 @@ const userController = require('../controllers/userController');
  *                 $ref: '#/components/schemas/User'
  */
 router.get('/users', userController.getUsers);
+// Ensure this is correctly connected
+router.post('/users', userController.createUser);  // Create user
 
 /**
  * @swagger
