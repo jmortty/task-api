@@ -1,27 +1,32 @@
-require('dotenv').config();  // Load environment variables from .env file
-
 const express = require('express');
-const connectDB = require('./config/db');  // MongoDB connection setup
-const userRoutes = require('./routes/userRoutes');  // Import user routes
-const taskRoutes = require('./routes/taskRoutes');  // Import task routes
-const commentRoutes = require('./routes/commentRoutes');  // Import comment routes
-const swaggerDocs = require('./swagger/swagger');  // Import Swagger documentation setup
+const connectDB = require('./config/db'); // MongoDB connection setup
+const userRoutes = require('./routes/userRoutes'); // User routes
+const labelRoutes = require('./routes/labelRoutes'); // Label routes
+const commentRoutes = require('./routes/commentRoutes'); // Comment routes
+const taskRoutes = require('./routes/taskRoutes'); // Task routes
+const swaggerDocs = require('./swagger/swagger'); // Swagger documentation setup
 
 const app = express();
 
-// Middleware to parse incoming JSON data
+// Middleware to parse JSON
 app.use(express.json());
+
+// Root Route: This will handle requests to "/"
+app.get('/', (req, res) => {
+    res.send('Welcome to the Task Management API!');
+});
 
 // Connect to MongoDB
 connectDB();
 
-// Register API routes
-app.use('/api', userRoutes);  // User routes at /api
-app.use('/api', taskRoutes);  // Task routes at /api
-app.use('/api', commentRoutes);  // Comment routes at /api
+// API Routes
+app.use('/api', userRoutes); // User API routes
+app.use('/api', labelRoutes); // Label API routes
+app.use('/api', commentRoutes); // Comment API routes
+app.use('/api', taskRoutes); // Task API routes
 
-// Set up Swagger documentation at /api-docs
-swaggerDocs(app);
+// Swagger documentation setup
+swaggerDocs(app); // Call swaggerDocs to set up Swagger UI
 
 // Start the server
 const PORT = process.env.PORT || 5000;
