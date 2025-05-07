@@ -1,32 +1,25 @@
 const express = require('express');
-const connectDB = require('./config/db'); // MongoDB connection setup
-const userRoutes = require('./routes/userRoutes'); // User routes
-const labelRoutes = require('./routes/labelRoutes'); // Label routes
-const commentRoutes = require('./routes/commentRoutes'); // Comment routes
-const taskRoutes = require('./routes/taskRoutes'); // Task routes
-const swaggerDocs = require('./swagger/swagger'); // Swagger documentation setup
+const connectDB = require('./config/db');  // MongoDB connection setup
+const userRoutes = require('./routes/userRoutes');  // User routes
+const taskRoutes = require('./routes/taskRoutes');  // Task routes
+const commentRoutes = require('./routes/commentRoutes');  // Comment routes
+const swaggerDocs = require('./swagger/swagger');  // Swagger documentation setup
 
 const app = express();
 
-// Middleware to parse JSON
+// Middleware to parse JSON requests
 app.use(express.json());
-
-// Root Route: This will handle requests to "/"
-app.get('/', (req, res) => {
-    res.send('Welcome to the Task Management API!');
-});
 
 // Connect to MongoDB
 connectDB();
 
 // API Routes
-app.use('/api', userRoutes); // User API routes
-app.use('/api', labelRoutes); // Label API routes
-app.use('/api', commentRoutes); // Comment API routes
-app.use('/api', taskRoutes); // Task API routes
+app.use('/api', userRoutes);  // Mount user routes at /api
+app.use('/api', taskRoutes);  // Mount task routes at /api
+app.use('/api', commentRoutes);  // Mount comment routes at /api
 
 // Swagger documentation setup
-swaggerDocs(app); // Call swaggerDocs to set up Swagger UI
+swaggerDocs(app);  // Set up Swagger UI for API docs
 
 // Start the server
 const PORT = process.env.PORT || 5000;
